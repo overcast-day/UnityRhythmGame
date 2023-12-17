@@ -96,7 +96,7 @@ public class TestConductor : MonoBehaviour
     {
         // sfxSource.clip = countdown;
         // sfxSource.Play();
-        //InternalGameLog.LogMessage("Countdown Started");
+        InternalGameLog.LogMessage("Countdown Started");
         musicSource.Play();
     }
 

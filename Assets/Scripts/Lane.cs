@@ -92,28 +92,28 @@ public class Lane : MonoBehaviour
                 if (Math.Abs(audioTime - timeStamp) < PerfectHitThreshold)
                 {
                     PerfectHit();
-                    print($"Perfect hit on {inputIndex} note");
+                    InternalGameLog.LogMessage($"Perfect hit on {inputIndex} note");
                     Destroy(notes[inputIndex].gameObject);
                     inputIndex++;
                 }
                 else if (Math.Abs(audioTime - timeStamp) < GoodHitThreshold)
                 {
                     Hit();
-                    print($"Hit on {inputIndex} note");
+                    InternalGameLog.LogMessage($"Hit on {inputIndex} note");
                     Destroy(notes[inputIndex].gameObject);
                     inputIndex++;
                 }
                 else
                 {
                     MisHit();
-                    print($"Hit inaccurate on {inputIndex} note with {Math.Abs(audioTime - timeStamp)} delay");
+                    InternalGameLog.LogMessage($"Hit inaccurate on {inputIndex} note with {Math.Abs(audioTime - timeStamp)} delay");
                 }
             }
 
             if (timeStamp + GoodHitThreshold <= audioTime)
             {
                 Miss();
-                print($"Missed {inputIndex} note");
+                InternalGameLog.LogMessage($"Missed {inputIndex} note");
                 inputIndex++;
             }
         }
