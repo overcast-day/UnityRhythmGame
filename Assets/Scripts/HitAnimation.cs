@@ -16,14 +16,13 @@ public class HitAnimation : MonoBehaviour
     public Color perfectHitColor = new Color(0, 1, 0); 
 
     void Start()
-        {
-            hitText = hitTextObject.GetComponent<TMPro.TextMeshPro>();
-            startColor = hitText.color;
-            //startColor.a = 0;
-            currentColor = hitText.color;
-            currentColor.a = showAlpha;
-            startColor = hitText.color;
-        }
+    {
+        hitText = hitTextObject.GetComponent<TMPro.TextMeshPro>();
+        startColor = hitText.color;
+        //startColor.a = 0;
+        currentColor = hitText.color;
+        currentColor.a = showAlpha;
+    }
 
     public void StartAnim(string hitString)
     {

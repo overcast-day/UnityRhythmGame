@@ -6,19 +6,35 @@ using TMPro;
 public class ReadyAnimation : MonoBehaviour
 {
     public GameObject readyText;
+    private TMPro.TextMeshPro animText;
+    private Color startColor;
+    private Color endColor;
     private TMP_Text textComp;
     private float charWidth = 4;
 
     void Awake()
     {
-        StartAnim();
+        animText = readyText.GetComponent<TMPro.TextMeshPro>();
+        startColor = animText.color;
+        endColor = animText.color;
+        endColor.a = 0.1f;
+        StartCoroutine(PlayTextAnim());
+    }
+
+    void Start()
+    {
+        animText = readyText.GetComponent<TMPro.TextMeshPro>();
+        startColor = animText.color;
+        endColor = animText.color;
+        endColor.a = 0.1f;
+        StartCoroutine(PlayTextAnim());
     }
 
     public void StartAnim()
     {
         readyText.SetActive(true);
         textComp = readyText.GetComponent<TMP_Text>();
-        StartCoroutine(PlayAnim());
+        StartCoroutine(PlayTextAnim());
     }
 
     IEnumerator PlayAnim()
@@ -49,6 +65,28 @@ public class ReadyAnimation : MonoBehaviour
                 m.mesh.vertices = m.vertices;
                 textComp.UpdateGeometry(m.mesh, i);
             }
+            yield return null;
+        }
+        EndAnim();
+        yield break;
+    }
+
+    IEnumerator PlayTextAnim()
+    {
+        float currentTime = 0;
+        float animLength = 1.5f;
+        float animSpeedInSec = animLength;
+
+        float oldSpace = -1;
+        float newSpace = 0;
+
+        while (currentTime < animSpeedInSec)
+        {
+            currentTime += Time.deltaTime;
+            animText.color = Color.Lerp(startColor, endColor, currentTime / animSpeedInSec);
+            newSpace = Mathf.Lerp(-1, 1.5f, currentTime / animSpeedInSec);
+            animText.text = ((string)animText.text).Replace($"<cspace={oldSpace}em>", $"<cspace={newSpace}em>");
+            oldSpace = newSpace;
             yield return null;
         }
         EndAnim();
