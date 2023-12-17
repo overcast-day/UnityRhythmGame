@@ -108,6 +108,7 @@ public class CalLane : MonoBehaviour
                     print($"Hit inaccurate on {inputIndex} note with {Math.Abs(audioTime - timeStamp)} delay");
                     StartCoroutine(AnimateKeyPress(missColor));
                     hitScript.StartAnim("Miss");
+                    Miss();
                 }
             }
 
@@ -124,24 +125,20 @@ public class CalLane : MonoBehaviour
     {
         StartCoroutine(AnimateKeyPress(hitColor));
         hitScript.StartAnim("Nice");
-        //ScoreManager.Hit(); // sound effects/visual on hit
         hitSFX.Play();
     }
     private void PerfectHit()
     {
         StartCoroutine(AnimateKeyPress(perfectHitColor));
         hitScript.StartAnim("Perfect");
-        //ScoreManager.PerfectHit(); // sound effects/visual on hit
         perfectSFX.Play();
     }
     private void Miss()
     {
-        //ScoreManager.Miss();
         missSFX.Play();
     }
     private void Beat()
     {
-        //ScoreManager.Beat();
         beatSFX.Play();
     }
     private IEnumerator AnimateKeyPress(Color cr)

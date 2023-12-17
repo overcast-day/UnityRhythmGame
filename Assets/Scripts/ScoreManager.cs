@@ -16,26 +16,47 @@ public class ScoreManager : MonoBehaviour
         Instance = this;
         SharedData.score = 0;
         SharedData.maxScore = 0;
+        SharedData.combo = 0;
+        SharedData.maxCombo = 0;
         SetSfxVolume();
     }
     public static void Hit()
     {
         SharedData.score += 1;
+        SharedData.combo += 1;
         Instance.hitSFX.Play();
     }
     public static void PerfectHit()
     {
         SharedData.score += 2;
-        Instance.perfectSFX.Play();
+        SharedData.combo += 1;
+        Instance.beatSFX.Play();
+    }
+
+    public static void MisHit()
+    {
+        SetMaxCombo(SharedData.combo);
+        SharedData.combo = 0;
+        Instance.missSFX.Play();
     }
     public static void Miss()
     {
-        Instance.missSFX.Play();
+        SetMaxCombo(SharedData.combo);
+        SharedData.combo = 0;
     }
     public static void Beat()
     {
         Instance.beatSFX.Play();
     }
+
+    public static void SetMaxCombo(int currentCombo)
+    {
+        if (currentCombo > SharedData.maxCombo) 
+        {
+            SharedData.maxCombo = currentCombo;
+        }
+    }
+    
     private void Update()
     {
         scoreText.text = (SharedData.score).ToString();

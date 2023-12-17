@@ -17,7 +17,9 @@ public class ScoreBoard : MonoBehaviour
     void Start()
     {
         Instance = this;
-        gameScore = (double)SharedData.score / SharedData.maxScore;
+        //gameScore = (double)SharedData.score / SharedData.maxScore; //old score calculation
+        //gameScore = 0.8 * ((double)SharedData.score / SharedData.maxScore) + 0.2 * (((double)SharedData.maxCombo / SharedData.maxScore/2) * (SharedData.maxScore/2 - 1)); //alt score system, requires sum of combos 
+        gameScore = 0.8 * ((double)SharedData.score / SharedData.maxScore) + 0.2 * ((double)SharedData.maxCombo / (SharedData.maxScore/2));
         scoreText.text = gameScore.ToString("P0");
         SharedData.score = 0;
         startReturnTextAnimation();

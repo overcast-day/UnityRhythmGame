@@ -18,10 +18,11 @@ public class HitAnimation : MonoBehaviour
     void Start()
         {
             hitText = hitTextObject.GetComponent<TMPro.TextMeshPro>();
+            startColor = hitText.color;
+            //startColor.a = 0;
             currentColor = hitText.color;
             currentColor.a = showAlpha;
             startColor = hitText.color;
-            startColor.a = 0;
         }
 
     public void StartAnim(string hitString)
@@ -32,12 +33,20 @@ public class HitAnimation : MonoBehaviour
         StartCoroutine(PlayAnim());
     }
 
-    IEnumerator PlayAnim()
+    public void StartAnim(string hitString, float animLength)
+    {
+        StopAllCoroutines();
+        hitText.color = currentColor;
+        hitText.text = hitString;
+        StartCoroutine(PlayAnim(animLength));
+    }
+
+    IEnumerator PlayAnim(float animLength = 0.5f)
     {
         Color currentColor = hitText.color;
 
         float currentTime = 0;
-        float animSpeedInSec = 0.5f;
+        float animSpeedInSec = animLength;
 
         while (currentTime < animSpeedInSec)
         {
@@ -51,6 +60,49 @@ public class HitAnimation : MonoBehaviour
 
     public void EndAnim()
     {
-        //Destroy(gameObject);
+        StopAllCoroutines();
+        hitText.color = startColor;
+    }
+
+    //additional methods
+    public void StartComboAnim(string comboString, float animLength)
+    {
+        StopAllCoroutines();
+        hitText.color = currentColor;
+        string newText = hitText.text;
+        newText = newText.Substring(0, newText.IndexOf(">") + 1);
+        hitText.text = newText + comboString;
+        StartCoroutine(PlayComboAnim(animLength));
+    }
+
+    IEnumerator PlayComboAnim(float animLength = 0.5f)
+    {
+        string alp;
+        string newTextAlpha = "";
+        string oldTextAlpha = "<alpha=#99>";
+        string newText = hitText.text;
+
+        float currentTime = 0;
+        float animSpeedInSec = animLength;
+
+        while (currentTime < animSpeedInSec)
+        {
+            currentTime += Time.deltaTime;
+            alp = Mathf.Lerp(99, 0, currentTime / animSpeedInSec).ToString("00");
+            newTextAlpha = $"<alpha=#{alp}>";
+            hitText.text = ((string)hitText.text).Replace(oldTextAlpha, newTextAlpha);
+            oldTextAlpha = newTextAlpha;
+            yield return null;
+        }
+        EndAnim();
+        yield break;
+    }
+    
+    public void SetAlpha(float newAlpha)
+    {
+        EndAnim();
+        Color col = currentColor;
+        col.a = newAlpha;
+        hitText.color = col;
     }
 }

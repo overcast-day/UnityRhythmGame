@@ -114,7 +114,7 @@ public class Conductor : MonoBehaviour
         {
             MusicStarted = false;
             InternalGameLog.LogMessage("Song Ended at " + AudioSettings.dspTime);
-            //SceneManager.LoadScene("ScoreBoard");
+            ScoreManager.SetMaxCombo(SharedData.combo);
             Invoke("GoToScoreBoard", 2.0f);
         }
 
@@ -245,6 +245,7 @@ public class Conductor : MonoBehaviour
 
     void GoToScoreBoard()
     {
+        ScoreManager.SetMaxCombo(SharedData.combo);
         SceneManager.LoadScene("ScoreBoard");
     }
 }

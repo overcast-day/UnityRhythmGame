@@ -7,7 +7,10 @@ using UnityEngine;
 public class Lane : MonoBehaviour
 {
     public GameObject hitAnimation;
+    public GameObject comboAnimation;
     private HitAnimation hitScript;
+
+    private HitAnimation comboScript;
     public GameObject visualGuide;
     SpriteRenderer visualSprite;
 
@@ -32,6 +35,7 @@ public class Lane : MonoBehaviour
     void Start()
     {
         hitScript = hitAnimation.GetComponent<HitAnimation>();
+        comboScript = comboAnimation.GetComponent<HitAnimation>();
         visualSprite = visualGuide.GetComponent<SpriteRenderer>();
         visualColor = visualSprite.color;
         visualScale = visualSprite.transform.localScale;
@@ -101,9 +105,8 @@ public class Lane : MonoBehaviour
                 }
                 else
                 {
+                    MisHit();
                     print($"Hit inaccurate on {inputIndex} note with {Math.Abs(audioTime - timeStamp)} delay");
-                    StartCoroutine(AnimateKeyPress(missColor));
-                    hitScript.StartAnim("Skill Issue");
                 }
             }
 
@@ -121,16 +124,27 @@ public class Lane : MonoBehaviour
         StartCoroutine(AnimateKeyPress(hitColor));
         hitScript.StartAnim("Nice");
         ScoreManager.Hit(); // sound effects/visual on hit
+        comboScript.StartAnim("COMBO\n" + SharedData.combo.ToString(), 2.5f);
     }
     private void PerfectHit()
     {
         StartCoroutine(AnimateKeyPress(perfectHitColor));
         hitScript.StartAnim("Perfect");
         ScoreManager.PerfectHit(); // sound effects/visual on hit
+        comboScript.StartAnim("COMBO\n" + SharedData.combo.ToString(), 2.5f);
     }
     private void Miss()
     {
         ScoreManager.Miss();
+        comboScript.EndAnim();
+    }
+
+    private void MisHit()
+    {
+        StartCoroutine(AnimateKeyPress(missColor));
+        hitScript.StartAnim("Skill Issue");
+        ScoreManager.MisHit();
+        comboScript.EndAnim();
     }
     private void Beat()
     {
