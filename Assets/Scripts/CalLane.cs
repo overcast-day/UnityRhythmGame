@@ -114,7 +114,6 @@ public class CalLane : MonoBehaviour
 
             if (timeStamp + GoodHitThreshold <= audioTime)
             {
-                Miss();
                 InternalGameLog.LogMessage($"Missed {inputIndex} note");
                 inputIndex++;
             }
